@@ -34,6 +34,11 @@ void main() {
     /* --- Initialize EntitySysD --- */
     auto game = new EntitySysD;
     auto player = game.entities.createPlayer();
+
+    game.systems.register(new MotionSystem);
+    game.systems.register(new UnitCollisionSystem);
+    game.systems.register(new InputSystem(player));
+    game.systems.register(new AnimationSystem);
     game.systems.register(new RenderSystem(spritesheet, player));
 
     /* --- Game Loop --- */

@@ -100,15 +100,17 @@ class InputSystem : System, Receiver!AllegroEvent {
     private Entity _player;
     enum playerAccel = 50;
 
+    this(Entity player) {
+        _player = player;
+    }
+
     override void run(EntityManager es, EventManager events, Duration dt) {
     }
 
     void receive(AllegroEvent ev) {
         assert(_player.valid);
 
-        auto pos(ALLEGRO_EVENT ev) {
-            return vec2f(ev.mouse.x, ev.mouse.y);
-        }
+        auto pos(ALLEGRO_EVENT ev) { return vec2f(ev.mouse.x, ev.mouse.y); }
 
         auto trans = _player.component!Transform;
         auto accel = _player.component!Acceleration;
