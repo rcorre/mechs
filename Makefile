@@ -1,5 +1,5 @@
 # resources contains version-controlled files that are build into content
-CONTENT_SOURCE = resources
+CONTENT_SOURCE = content
 CONTENT_DEST = bin
 
 COPY_FILES := \
