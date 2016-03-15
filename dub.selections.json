@@ -1,0 +1,12 @@
+{
+	"fileVersion": 1,
+	"versions": {
+		"entitysysd": "2.3.0",
+		"jsonizer": "0.5.2",
+		"derelict-util": "2.0.4",
+		"gfm": "5.0.3",
+		"derelict-sdl2": "1.9.7",
+		"dtiled": "0.3.3",
+		"allegro": "3.0.2+5.1.13"
+	}
+}

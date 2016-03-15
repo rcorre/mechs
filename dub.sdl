@@ -1,4 +1,58 @@
 name "mechs"
-description "A minimal D application."
+description "2D top-down action game"
 copyright "Copyright © 2016, rcorre"
 authors "rcorre"
+license "MIT"
+
+targetType "executable"
+targetName "mechs"
+targetPath "bin/"
+workingDirectory "bin/"
+
+dependency "dtiled" version="~>0.3.0"
+dependency "allegro" version="==3.0.2+5.1.13"
+dependency "gfm:math" version="~>5.0.0"
+dependency "entitysysd" version="~>2.3.0"
+
+lflags "-Lbuild/lib"
+
+libs "allegro-static"            \
+     "allegro_acodec-static"     \
+     "allegro_audio-static"      \
+     "allegro_color-static"      \
+     "allegro_font-static"       \
+     "allegro_image-static"      \
+     "allegro_main-static"       \
+     "allegro_ttf-static"        \
+     "allegro_primitives-static" \
+     "png"                       \
+     "FLAC"                      \
+     "ogg"                       \
+     "vorbisfile"                \
+     "vorbis"                    \
+     "pulse-simple"              \
+     "pulse"                     \
+     "asound"                    \
+     "openal"                    \
+     "z"                         \
+     "jpeg"                      \
+     "freetype"                  \
+     "m"                         \
+     "pthread"                   \
+     "SM"                        \
+     "ICE"                       \
+     "GL"                        \
+     "GLU"                       \
+     "X11"                       \
+     "Xext"                      \
+     "Xcursor"                   \
+     "Xi"                        \
+     "Xinerama"                  \
+     "Xrandr"                    \
+     "Xrender"                   \
+     "Xfixes"                    \
+     "Xdamage"                   \
+     "X11-xcb"                   \
+     "Xxf86vm"                   \
+     "Xau"                       \
+     "Xdmcp"
