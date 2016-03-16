@@ -81,12 +81,6 @@ class MotionSystem : System {
         immutable time = dt.total!"msecs" / 1000f; // in seconds
 
         foreach (ent, trans, vel; em.entitiesWith!(Transform, Velocity)) {
-            if (ent.isRegistered!Acceleration) {
-                auto accel = ent.component!Acceleration;
-                vel.linear = vel.linear + accel.linear * time;
-                vel.angular = vel.angular + accel.angular * time;
-            }
-
             trans.pos = trans.pos + vel.linear * time;
             trans.angle = trans.angle + vel.angular * time;
         }
@@ -98,7 +92,7 @@ class UnitCollisionSystem : System {
 
 class InputSystem : System, Receiver!AllegroEvent {
     private Entity _player;
-    enum playerAccel = 50;
+    enum playerSpeed = 50;
 
     this(Entity player) {
         _player = player;
@@ -113,22 +107,22 @@ class InputSystem : System, Receiver!AllegroEvent {
         auto pos(ALLEGRO_EVENT ev) { return vec2f(ev.mouse.x, ev.mouse.y); }
 
         auto trans = _player.component!Transform;
-        auto accel = _player.component!Acceleration;
+        auto vel = _player.component!Velocity;
 
         switch (ev.type) {
             case ALLEGRO_EVENT_KEY_DOWN:
                 switch (ev.keyboard.keycode) {
                     case ALLEGRO_KEY_W:
-                        accel.linear.y = playerAccel;
+                        vel.linear.y = playerSpeed;
                         break;
                     case ALLEGRO_KEY_S:
-                        accel.linear.y = -playerAccel;
+                        vel.linear.y = -playerSpeed;
                         break;
                     case ALLEGRO_KEY_A:
-                        accel.linear.x = -playerAccel;
+                        vel.linear.x = -playerSpeed;
                         break;
                     case ALLEGRO_KEY_D:
-                        accel.linear.x = playerAccel;
+                        vel.linear.x = playerSpeed;
                         break;
                     default:
                 }
@@ -137,11 +131,11 @@ class InputSystem : System, Receiver!AllegroEvent {
                 switch (ev.keyboard.keycode) {
                     case ALLEGRO_KEY_W:
                     case ALLEGRO_KEY_S:
-                        accel.linear.y = 0;
+                        vel.linear.y = 0;
                         break;
                     case ALLEGRO_KEY_A:
                     case ALLEGRO_KEY_D:
-                        accel.linear.x = 0;
+                        vel.linear.x = 0;
                         break;
                     default:
                 }

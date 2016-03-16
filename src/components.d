@@ -49,11 +49,6 @@ struct Velocity {
     float angular = 0;
 }
 
-struct Acceleration {
-    vec2f linear = [0,0];
-    float angular = 0;
-}
-
 struct Animator {
     float duration, countdown;
     int frame;

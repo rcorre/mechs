@@ -36,7 +36,6 @@ auto createPlayer(EntityManager em) {
 
     ent.register!Transform(vec2f(400, 400));
     ent.register!Velocity();
-    ent.register!Acceleration();
     ent.register!Sprite(SpriteRect.player);
     //ent.register!Animator(0.1f, SpriteRect.player, animationOffset);
     //ent.register!PlayerCollider(12); // radius = 12
