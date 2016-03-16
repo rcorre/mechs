@@ -81,8 +81,8 @@ class MotionSystem : System {
         immutable time = dt.total!"msecs" / 1000f; // in seconds
 
         foreach (ent, trans, vel; em.entitiesWith!(Transform, Velocity)) {
-            trans.pos = trans.pos + vel.linear * time;
-            trans.angle = trans.angle + vel.angular * time;
+            trans.pos += vel.linear * time;
+            trans.angle += vel.angular * time;
         }
     }
 }
@@ -92,7 +92,7 @@ class UnitCollisionSystem : System {
 
 class InputSystem : System, Receiver!AllegroEvent {
     private Entity _player;
-    enum playerSpeed = 50;
+    enum playerSpeed = 120;
 
     this(Entity player) {
         _player = player;
@@ -113,10 +113,10 @@ class InputSystem : System, Receiver!AllegroEvent {
             case ALLEGRO_EVENT_KEY_DOWN:
                 switch (ev.keyboard.keycode) {
                     case ALLEGRO_KEY_W:
-                        vel.linear.y = playerSpeed;
+                        vel.linear.y = -playerSpeed;
                         break;
                     case ALLEGRO_KEY_S:
-                        vel.linear.y = -playerSpeed;
+                        vel.linear.y = playerSpeed;
                         break;
                     case ALLEGRO_KEY_A:
                         vel.linear.x = -playerSpeed;
