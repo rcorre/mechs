@@ -34,6 +34,7 @@ void main() {
     /* --- Initialize EntitySysD --- */
     auto game = new EntitySysD;
     auto player = game.entities.createPlayer();
+    game.entities.createMap("map0.json");
 
     game.systems.register(new MotionSystem);
     game.systems.register(new UnitCollisionSystem);
