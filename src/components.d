@@ -7,6 +7,13 @@ import entitysysd;
 import allegro5.allegro;
 import allegro5.allegro_color;
 
+// used in loadout
+struct Weapon {
+    float fireDelay;     /// time between shots
+    float countdown = 0; /// countdown until next shot
+    bool firing;
+}
+
 @component:
 
 struct Transform {
@@ -64,6 +71,7 @@ struct Animator {
 }
 
 struct Loadout {
+    Weapon[2] weapons;
 }
 
 struct Health {

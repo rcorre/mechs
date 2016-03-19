@@ -1,6 +1,7 @@
 
 module entities;
 
+import std.math;
 import std.range;
 import std.algorithm;
 
@@ -18,17 +19,11 @@ enum spriteSize = 32; // size of grid in spritesheet
 enum animationOffset = vec2i(32, 0); // space between animation frames
 
 struct SpriteRect {
-    static immutable player = spriteAt(3, 0);
-    static immutable speedPickup = spriteAt(4, 0);
-    static immutable shieldPickup = spriteAt(4, 1);
+    static immutable player     = spriteRect(0, 3 * 32, 32, 32);
+    static immutable projectile = spriteRect(0, 4 * 32, 16, 16);
 }
 
-auto spriteAt(int row, int col) {
-    return box2i(col       * spriteSize,
-                 row       * spriteSize,
-                 (col + 1) * spriteSize,
-                 (row + 1) * spriteSize);
-}
+auto spriteRect(int x, int y, int w, int h) { return box2i(x, y, x + w, y + h); }
 
 public:
 auto createPlayer(EntityManager em) {
@@ -37,6 +32,10 @@ auto createPlayer(EntityManager em) {
     ent.register!Transform(vec2f(400, 400));
     ent.register!Velocity();
     ent.register!Sprite(SpriteRect.player);
+
+    auto loadout = ent.register!Loadout;
+    loadout.weapons[0] = Weapon(0.05);
+    loadout.weapons[1] = Weapon(0.3);
     //ent.register!Animator(0.1f, SpriteRect.player, animationOffset);
     //ent.register!PlayerCollider(12); // radius = 12
 
@@ -76,4 +75,12 @@ void createMap(EntityManager em, string path) {
   //    auto ent = em.create();
   //    ent.register!Collider(box, reflective);
   //}
+}
+
+void createProjectile(EntityManager em, vec2f pos, float angle, float speed) {
+    auto ent = em.create();
+
+    ent.register!Transform(pos, vec2f(1, 1), angle);
+    ent.register!Velocity(vec2f(speed * cos(angle), speed * sin(angle)));
+    ent.register!Sprite(SpriteRect.projectile);
 }

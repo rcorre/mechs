@@ -144,12 +144,18 @@ class InputSystem : System, Receiver!AllegroEvent {
                 auto disp = pos(ev) - vec2f(screenW, screenH) / 2;
                 trans.angle = atan2(disp.y, disp.x);
                 break;
-            //case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
-            //    listener.mouseDown(es, ent, pos(ev), ev.mouse.button);
-            //    break;
-            //case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
-            //    listener.mouseUp(es, ent, pos(ev), ev.mouse.button);
-            //    break;
+            case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+                if (ev.mouse.button == 1) // fire primary
+                    _player.component!Loadout.weapons[0].firing = true;
+                else if (ev.mouse.button == 2) // fire secondary
+                    _player.component!Loadout.weapons[1].firing = true;
+                break;
+            case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
+                if (ev.mouse.button == 1) // stop firing primary
+                    _player.component!Loadout.weapons[0].firing = false;
+                else if (ev.mouse.button == 2) // stop firing secondary
+                    _player.component!Loadout.weapons[1].firing = false;
+                break;
             default:
         }
     }
@@ -168,6 +174,23 @@ class AnimationSystem : System {
             }
 
             sprite.rect = ani.start.translate(ani.offset * ani.frame);
+        }
+    }
+}
+
+class WeaponSystem : System {
+    override void run(EntityManager em, EventManager events, Duration dt) {
+        enum projectileSpeed = 600;
+
+        foreach (ent, trans, loadout; em.entitiesWith!(Transform, Loadout)) {
+            immutable elapsed = dt.total!"msecs" / 1000f;
+
+            foreach(ref w ; loadout.weapons) {
+                if ((w.countdown -= elapsed) < 0 && w.firing) {
+                    w.countdown = w.fireDelay;
+                    em.createProjectile(trans.pos, trans.angle, projectileSpeed);
+                }
+            }
         }
     }
 }

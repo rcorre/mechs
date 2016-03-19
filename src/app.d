@@ -41,6 +41,7 @@ void main() {
     game.systems.register(new InputSystem(player));
     game.systems.register(new AnimationSystem);
     game.systems.register(new RenderSystem(spritesheet, player));
+    game.systems.register(new WeaponSystem);
 
     /* --- Game Loop --- */
     al_start_timer(fpsTimer);
