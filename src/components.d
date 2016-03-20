@@ -10,6 +10,7 @@ import allegro5.allegro_color;
 // used in loadout
 struct Weapon {
     float fireDelay;     /// time between shots
+    float spread = 0;    /// arc of inaccuracy in radians
     float countdown = 0; /// countdown until next shot
     bool firing;
 }

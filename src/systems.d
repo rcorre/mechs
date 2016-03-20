@@ -2,6 +2,7 @@ module systems;
 
 import std.math;
 import std.range;
+import std.random;
 import std.algorithm;
 
 import gfm.math;
@@ -188,7 +189,10 @@ class WeaponSystem : System {
             foreach(ref w ; loadout.weapons) {
                 if ((w.countdown -= elapsed) < 0 && w.firing) {
                     w.countdown = w.fireDelay;
-                    em.createProjectile(trans.pos, trans.angle, projectileSpeed);
+
+                    // apply inaccuracy
+                    immutable angle = trans.angle + (0.5 - uniform01) * w.spread;
+                    em.createProjectile(trans.pos, angle, projectileSpeed);
                 }
             }
         }

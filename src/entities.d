@@ -34,8 +34,8 @@ auto createPlayer(EntityManager em) {
     ent.register!Sprite(SpriteRect.player);
 
     auto loadout = ent.register!Loadout;
-    loadout.weapons[0] = Weapon(0.05);
-    loadout.weapons[1] = Weapon(0.3);
+    loadout.weapons[0] = Weapon(0.05, 0.25);
+    loadout.weapons[1] = Weapon(0.3, 0.1);
     //ent.register!Animator(0.1f, SpriteRect.player, animationOffset);
     //ent.register!PlayerCollider(12); // radius = 12
 
