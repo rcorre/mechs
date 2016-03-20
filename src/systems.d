@@ -194,3 +194,45 @@ class WeaponSystem : System {
         }
     }
 }
+
+/// Destroy an entity after a certain amount of time has elapsed
+class DestroyAfterSystem : System {
+    override void run(EntityManager em, EventManager events, Duration dt) {
+        immutable time = dt.total!"msecs" / 1000f; // in seconds
+
+        foreach (ent, dest; em.entitiesWith!DestroyAfter)
+            if ((dest.duration -= time) < 0)
+                ent.destroy();
+    }
+}
+
+/// Decrease a sprite's alpha every frame.
+class FadeSpriteSystem : System {
+    override void run(EntityManager em, EventManager events, Duration dt) {
+        immutable secs = dt.total!"msecs" / 1000f; // in seconds
+
+        foreach (ent, sprite, fade; em.entitiesWith!(Sprite, FadeSprite))
+            sprite.tint.a -= fade.alphaPerSec * secs;
+    }
+}
+
+/// Create sprites behind a moving object to create a 'trail' effect.
+class RenderTrailSystem : System {
+    override void run(EntityManager em, EventManager events, Duration dt) {
+        immutable time = dt.total!"msecs" / 1000f; // in seconds
+
+        foreach (ent, trans, sprite, trail;
+                 em.entitiesWith!(Transform, Sprite, RenderTrail))
+        {
+            if ((trail.countdown -= time) < 0) {
+                auto e = em.create();
+                e.register!Transform(trans.pos, trans.scale, trans.angle);
+                e.register!Sprite(sprite.rect, sprite.tint);
+                e.register!FadeSprite(0.1);
+                e.register!DestroyAfter(0.1);
+
+                trail.countdown = trail.interval; // reset timer
+            }
+        }
+    }
+}

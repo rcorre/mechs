@@ -77,3 +77,25 @@ struct Loadout {
 struct Health {
     int amount;
 }
+
+struct RenderTrail {
+    this(float interval) {
+        this.interval = interval;
+        this.countdown = interval;
+    }
+
+    float interval;
+    float countdown;
+}
+
+struct FadeSprite {
+    this(float duration) {
+        alphaPerSec = 1 / duration;
+    }
+
+    float alphaPerSec;
+}
+
+struct DestroyAfter {
+    float duration;
+}

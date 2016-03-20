@@ -82,5 +82,7 @@ void createProjectile(EntityManager em, vec2f pos, float angle, float speed) {
 
     ent.register!Transform(pos, vec2f(1, 1), angle);
     ent.register!Velocity(vec2f(speed * cos(angle), speed * sin(angle)));
-    ent.register!Sprite(SpriteRect.projectile);
+    ent.register!Sprite(SpriteRect.projectile, al_map_rgba(255,255,255,255));
+    ent.register!RenderTrail(0.01); // create a 'ghost' every 0.01s
+    ent.register!DestroyAfter(3.0); // ensure it doesn't hang around forever
 }
