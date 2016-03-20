@@ -27,6 +27,10 @@ void main() {
     al_register_event_source(queue, al_get_mouse_event_source());
     al_register_event_source(queue, al_get_timer_event_source(fpsTimer));
 
+    // allow fading sprites by reducing the alpha against a black background
+    with(ALLEGRO_BLEND_MODE)
+        al_set_blender(ALLEGRO_BLEND_OPERATIONS.ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
+
     /* --- Load Resources --- */
     auto spritesheet = al_load_bitmap("spritesheet.png");
     assert(spritesheet, "Failed to load spritesheet.png");
