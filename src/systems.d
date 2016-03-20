@@ -240,3 +240,19 @@ class RenderTrailSystem : System {
         }
     }
 }
+
+/// Draw colliders for visual debugging
+class DebugColliderSystem : System {
+    this() {
+        al_init_primitives_addon();
+    }
+
+    override void run(EntityManager em, EventManager events, Duration dt) {
+        immutable wallColor = al_map_rgba(128, 0, 0, 128);
+        immutable thickness = 2;
+        foreach(col ; em.components!WallCollider) {
+            auto r = col.rect;
+            al_draw_rectangle(r.min.x, r.min.y, r.max.x, r.max.y, wallColor, thickness);
+        }
+    }
+}

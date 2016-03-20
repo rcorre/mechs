@@ -1,6 +1,7 @@
 
 module entities;
 
+import std.conv;
 import std.math;
 import std.range;
 import std.algorithm;
@@ -57,12 +58,15 @@ void createMap(EntityManager em, string path) {
 
       auto region = box2i(tileset.tileOffsetX(gid),
                           tileset.tileOffsetY(gid),
-                          tileset.tileOffsetX(gid) + tileset.tileWidth,
-                          tileset.tileOffsetY(gid) + tileset.tileHeight);
+                          tileset.tileOffsetX(gid) + tw,
+                          tileset.tileOffsetY(gid) + th);
 
       auto ent = em.create();
       ent.register!Transform(pos);
       ent.register!Sprite(region);
+
+      if (tileset.tileProperties(gid).get("impassable", "false").to!bool)
+          ent.register!WallCollider(box2f(pos.x, pos.y, pos.x + tw, pos.y + th));
   }
 
   // create colliders
