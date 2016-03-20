@@ -11,6 +11,7 @@ workingDirectory "bin/"
 
 dependency "dtiled" version="~>0.3.0"
 dependency "allegro" version="==3.0.2+5.1.13"
+dependency "discord" path="./discord"
 dependency "gfm:math" version="~>5.0.0"
 dependency "entitysysd" version="~>2.3.0"
 
