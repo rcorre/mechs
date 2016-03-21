@@ -49,7 +49,6 @@ void main() {
     game.systems.register(new DestroyAfterSystem);
     game.systems.register(new FadeSpriteSystem);
     game.systems.register(new RenderTrailSystem);
-    game.systems.register(new DebugColliderSystem);
 
     /* --- Game Loop --- */
     al_start_timer(fpsTimer);

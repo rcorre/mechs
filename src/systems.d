@@ -6,6 +6,7 @@ import std.random;
 import std.algorithm;
 
 import gfm.math;
+import discord.sat;
 import entitysysd;
 import allegro5.allegro;
 import allegro5.allegro_color;
@@ -89,6 +90,19 @@ class MotionSystem : System {
 }
 
 class UnitCollisionSystem : System {
+    override void run(EntityManager em, EventManager events, Duration dt) {
+        foreach (ent, trans, coll; em.entitiesWith!(Transform, UnitCollider)) {
+            auto rect = coll.rect.translate(vec2f(
+                    trans.pos.x - coll.rect.width / 2,
+                    trans.pos.y - coll.rect.height / 2));
+
+            // push out of collision with walls
+            foreach (wall; em.components!WallCollider)
+                rect = rect.translate(separate(rect, wall.rect));
+
+            trans.pos = rect.center;
+        }
+    }
 }
 
 class InputSystem : System, Receiver!AllegroEvent {
@@ -97,9 +111,6 @@ class InputSystem : System, Receiver!AllegroEvent {
 
     this(Entity player) {
         _player = player;
-    }
-
-    override void run(EntityManager es, EventManager events, Duration dt) {
     }
 
     void receive(AllegroEvent ev) {
@@ -237,22 +248,6 @@ class RenderTrailSystem : System {
 
                 trail.countdown = trail.interval; // reset timer
             }
-        }
-    }
-}
-
-/// Draw colliders for visual debugging
-class DebugColliderSystem : System {
-    this() {
-        al_init_primitives_addon();
-    }
-
-    override void run(EntityManager em, EventManager events, Duration dt) {
-        immutable wallColor = al_map_rgba(128, 0, 0, 128);
-        immutable thickness = 2;
-        foreach(col ; em.components!WallCollider) {
-            auto r = col.rect;
-            al_draw_rectangle(r.min.x, r.min.y, r.max.x, r.max.y, wallColor, thickness);
         }
     }
 }
